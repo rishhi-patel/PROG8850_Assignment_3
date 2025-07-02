@@ -3,7 +3,11 @@
 ## TL;DR
 ```bash
 # Run containers with ansible
-ansible-playbook -i ansible/inventory.ini ansible/playbook.yml
+ansible-playbook up.yml
+```
+```bash
+# Run containers with ansible
+ansible-playbook down.yml
 ```
 
 ### Or plain Docker Compose
@@ -37,25 +41,3 @@ python test_login.py
 └── .devcontainer/
     └── devcontainer.json  # VS Code container config
 ```
-
-## ⚙️ Dev Container (VS Code)
-Open folder in VS Code → "Reopen in Container".  
-You’ll get:
-- Python 3 + Pip
-- MySQL tools
-- Ansible preinstalled
-- Required extensions auto-installed
-
-## ✅ Environment Variables
-Set in `docker-compose.yml`:
-
-| Variable | Default |
-|----------|---------|
-| `MYSQL_USER` | root |
-| `MYSQL_PASSWORD` | yourpassword |
-| `MYSQL_DATABASE` | login_db |
-| `MYSQL_HOST` | db |
-
----
-
-Made for **PROG8850 – Assignment 3** by Rishi.
