@@ -6,9 +6,9 @@ services:
       MYSQL_DATABASE: login_db
     volumes:
       - db_data:/var/lib/mysql
-      - ./setup.sql:/docker-entrypoint-initdb.d/setup.sql:ro
+      - ./setup.sql:/docker-entrypoint-initdb.d/setup.sql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
       interval: 5s
       retries: 5
     ports:
