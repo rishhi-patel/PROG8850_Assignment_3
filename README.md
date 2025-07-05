@@ -75,6 +75,8 @@ This stops and removes all containers and volumes.
 $ python test_login.py
 ✅  Test passed.
 ```
+<img width="1710" alt="image" src="https://github.com/user-attachments/assets/8f84b0c3-a72c-48ff-95f5-a050ef8ead0e" />
+
 
 ---
 
