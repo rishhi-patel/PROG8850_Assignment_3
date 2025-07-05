@@ -1,28 +1,42 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+import os
 import time
 import mysql.connector
-import os
 
-driver = webdriver.Chrome()
-driver.get("http://localhost:5000")
+chrome_opts = webdriver.ChromeOptions()
+chrome_opts.add_argument("--headless=new")          # run headless
+chrome_opts.add_argument("--no-sandbox")            # good for Docker
+chrome_opts.add_argument("--disable-dev-shm-usage")  # prevent /dev/shm errors
 
-driver.find_element(By.NAME, "username").send_keys("testuser")
-driver.find_element(By.NAME, "password").send_keys("testpass")
-driver.find_element(By.TAG_NAME, "button").click()
+SELENIUM_HUB = "http://localhost:4444/wd/hub"
+APP_URL = "http://app:5000"
 
-time.sleep(2)
-driver.quit()
+
+driver = webdriver.Remote(
+    command_executor=SELENIUM_HUB,
+    options=chrome_opts
+)
+
+
+try:
+    driver.get(APP_URL)
+    driver.find_element(By.NAME, "username").send_keys("testuser")
+    driver.find_element(By.NAME, "password").send_keys("testpass")
+    driver.find_element(By.TAG_NAME, "button").click()
+    time.sleep(1)
+finally:
+    driver.quit()
+
 
 conn = mysql.connector.connect(
     host="localhost",
-    user=os.getenv("MYSQL_USER", "root"),
-    password=os.getenv("MYSQL_PASSWORD", "yourpassword"),
-    database=os.getenv("MYSQL_DATABASE", "login_db")
+    user="root",
+    password="yourpassword",
+    database="login_db"
 )
-cursor = conn.cursor()
-cursor.execute("SELECT * FROM users WHERE username='testuser'")
-result = cursor.fetchone()
-assert result is not None, "User was not inserted"
-print("Test Passed: User inserted.")
+cur = conn.cursor()
+cur.execute("SELECT 1 FROM users WHERE username=%s", ("testuser",))
+assert cur.fetchone(), "User insertion failed!"
+print("✅  Test passed.")
 conn.close()
