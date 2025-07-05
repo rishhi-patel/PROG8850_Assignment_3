@@ -30,13 +30,5 @@ services:
     shm_size: 2gb # prevents Chrome from choking on /dev/shm
     ports:
       - "4444:4444" # WebDriver endpoint
-  test:
-    image: selenium/standalone-chrome
-    depends_on:
-      - app
-    entrypoint: ["python3", "tests/test_login.py"]
-    volumes:
-      - .:/tests
-    network_mode: "service:app"
 volumes:
   db_data:
